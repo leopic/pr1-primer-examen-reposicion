@@ -12,12 +12,13 @@ def seeder
   transacciones = []
   fecha_inicial = Date.new(2015, 3, 26)
 
-  (1..50).each do |i|
+  (1..15).each do |i|
     transacciones.push(
         {
             :id => i,
             :fecha => fecha_inicial.prev_day(i).strftime("%d/%m/%Y"),
             :monto => i.odd? ? (i * -5) : (i * 10),
+            :tipo => i.odd? ? "Debito" : "Credito",
             :descripcion => i.odd? ? "Entrada de dinero." : "Salida de dinero."
         }
     )
@@ -26,9 +27,15 @@ def seeder
   transacciones
 end
 
-get '/transaccion/todas' do
+get '/cuenta' do
   content_type :json
-  seeder.to_json
+  cuenta = {
+      :nombre_dueno => "Leonardo Picado Ortega",
+      :tipo_cuenta => "Ahorros",
+      :moneda => "Dolares",
+      :transacciones => seeder
+  }
+  cuenta.to_json
 end
 
 get '/transaccion/id/:id' do
