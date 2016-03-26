@@ -1,6 +1,12 @@
 require 'sinatra'
 require 'json'
 
+before do
+  response.headers["Allow"] = "HEAD,GET,PUT,DELETE,OPTIONS"
+  response.headers["Access-Control-Allow-Origin"] = "*"
+  response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+end
+
 def seeder
   transacciones = []
 
