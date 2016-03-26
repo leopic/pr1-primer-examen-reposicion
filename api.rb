@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+require 'date'
 
 before do
   response.headers["Allow"] = "HEAD,GET,PUT,DELETE,OPTIONS"
@@ -9,13 +10,15 @@ end
 
 def seeder
   transacciones = []
+  fecha_inicial = Date.new(2015, 3, 26)
 
   (1..50).each do |i|
     transacciones.push(
         {
             :id => i,
-            :monto => (i % 2 == 0) ? (i * -5) : (i * 10),
-            :descripcion => "Transaccion numero #{i}"
+            :fecha => fecha_inicial.prev_day(i).strftime("%d/%m/%Y"),
+            :monto => i.odd? ? (i * -5) : (i * 10),
+            :descripcion => i.odd? ? "Entrada de dinero." : "Salida de dinero."
         }
     )
   end
